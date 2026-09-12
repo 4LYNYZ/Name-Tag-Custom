@@ -5,11 +5,11 @@ module.exports = (req, res) => {
     const isBrowser = userAgent.includes("Mozilla/") && !userAgent.includes("Roblox");
 
     if (isBrowser) {
-        // Kalau benar-benar dibrowser, lempar ke index.html
+        // Kalau benar-benar dibrowser, lempar ke index.html atau tampilkan error 403
         res.writeHead(302, { Location: '/index.html' });
         res.end();
     } else {
-        // Kalau dari executor Roblox atau curl/script, langsung kirim kodenya
+        // Kalau dari executor Roblox, kirim script Lua aslinya
         const luaScript = `
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
@@ -183,7 +183,7 @@ hexLabel.BackgroundTransparency = 1
 hexLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 hexLabel.TextSize = 18
 hexLabel.Font = Enum.Font.SourceSansBold
-hexLabel.Text = "#FCD902"
+hexLabel.Text = "#787878"
 hexLabel.ZIndex = 6
 hexLabel.Parent = pickerFrame
 
@@ -213,7 +213,7 @@ local cursorCorner = Instance.new("UICorner")
 cursorCorner.CornerRadius = UDim.new(1, 0)
 cursorCorner.Parent = cursor
 
--- Hue Bar (Built-in UIGradient Rainbow Slider)
+-- Hue Bar
 local hueSlider = Instance.new("Frame")
 hueSlider.Name = "HueSlider"
 hueSlider.Size = UDim2.new(1, -24, 0, 20)
@@ -413,7 +413,7 @@ local function createSettingRow(posY, labelText, controlType, defaultVal, btnNam
 end
 
 -- Build Option Rows
-createSettingRow(110, "Chat Tag", "TagInput", "ADMIN", "")
+createSettingRow(110, "Chat Tag", "TagInput", "Fan", "")
 createSettingRow(160, "Tag Color", "ColorPicker", tagColor, "TagColorBtn")
 createSettingRow(210, "Chat Color", "ColorPicker", chatColor, "ChatColorBtn")
 createSettingRow(260, "Name Color", "ColorPicker", nameColor, "NameColorBtn")
@@ -434,11 +434,11 @@ local resetCorner = Instance.new("UICorner")
 resetCorner.CornerRadius = UDim.new(0, 6)
 resetCorner.Parent = resetButton
 
-resetButton.MouseButton1Click:Connect(function` + `()
-	tagText = "ADMIN"
-	tagColor = Color3.fromRGB(240, 190, 20)
-	chatColor = Color3.fromRGB(0, 0, 255)
-	nameColor = Color3.fromRGB(240, 190, 20)
+resetButton.MouseButton1Click:Connect(function()
+	tagText = "Fan"
+	tagColor = Color3.fromRGB(120, 120, 120)
+	chatColor = Color3.fromRGB(120, 120, 120)
+	nameColor = Color3.fromRGB(120, 120, 120)
 	
 	local tagBox = mainFrame:FindFirstChild("TagInputBox")
 	if tagBox then tagBox.Text = tagText end
