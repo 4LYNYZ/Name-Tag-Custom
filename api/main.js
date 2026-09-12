@@ -1,15 +1,15 @@
 module.exports = (req, res) => {
     const userAgent = req.headers['user-agent'] || '';
 
-    // Cek apakah yang akses adalah browser (Chrome, Safari, dll)
-    const isBrowser = userAgent.includes("Mozilla") || userAgent.includes("Chrome") || userAgent.includes("Safari");
+    // Deteksi apakah yang akses adalah browser biasa (Chrome, Edge, Firefox, Safari di HP/PC)
+    const isBrowser = userAgent.includes("Mozilla/") && !userAgent.includes("Roblox");
 
     if (isBrowser) {
-        // Kalau dibuka lewat browser biasa, alihkan ke halaman web penutup (index.html)
+        // Kalau benar-benar dibrowser, lempar ke index.html
         res.writeHead(302, { Location: '/index.html' });
         res.end();
     } else {
-        // Kalau di-execute lewat game (Executor Roblox), kirim script Lua aslinya
+        // Kalau dari executor Roblox atau curl/script, langsung kirim kodenya
         const luaScript = `
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
@@ -434,7 +434,7 @@ local resetCorner = Instance.new("UICorner")
 resetCorner.CornerRadius = UDim.new(0, 6)
 resetCorner.Parent = resetButton
 
-resetButton.MouseButton1Click:Connect(function()
+resetButton.MouseButton1Click:Connect(function` + `()
 	tagText = "ADMIN"
 	tagColor = Color3.fromRGB(240, 190, 20)
 	chatColor = Color3.fromRGB(0, 0, 255)
